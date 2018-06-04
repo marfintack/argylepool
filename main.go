@@ -71,6 +71,7 @@ func readConfig(cfg *proxy.Config) {
 }
 
 func main() {
+
 	readConfig(&cfg)
 	rand.Seed(time.Now().UnixNano())
 
