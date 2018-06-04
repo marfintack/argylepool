@@ -101,7 +101,7 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	log.Printf("Valid share from %s@%s", login, cs.ip)
 	db, err := gorm.Open(config.DB.Dialect, dbURI)
 	if err != nil {
-		log.Fatal("Could not connect database ")
+		log.Fatal("Could not connect database %s", err)
 	}
 	fmt.Println("Connected to DB Successfully %s", db)
 	if !workerPattern.MatchString(id) {
