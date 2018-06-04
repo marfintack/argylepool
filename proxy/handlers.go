@@ -1,14 +1,17 @@
 package proxy
 
 import (
-	"log"
-	"regexp"
-	"strings"
-        "fmt"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strconv"
+	"strings"
+
+	"github.com/jinzhu/gorm"
+	"github.com/marfintack/argylepool/config"
 	"github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/util"
 )
@@ -58,6 +61,19 @@ func (s *ProxyServer) handleTCPSubmitRPC(cs *Session, id string, params []string
 }
 
 func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []string) (bool, *ErrorReply) {
+	config := config.GetConfig()
+	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
+		config.DB.Username,
+		config.DB.Password,
+		config.DB.Host,
+		config.DB.Port,
+		config.DB.Name,
+		config.DB.Charset)
+	db, err := gorm.Open(config.DB.Dialect, dbURI)
+	if err != nil {
+		log.Fatal("Could not connect database ")
+	}
+	fmt.Println("Connected to DB Successfully %s", db)
 	if !workerPattern.MatchString(id) {
 		id = "0"
 	}
@@ -90,11 +106,11 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 		return false, nil
 	}
 	log.Printf("Valid share from %s@%s", login, cs.ip)
-        apiUrl := "https://admin.argylecoin.com"
+	apiUrl := "https://admin.argylecoin.com"
 	resource := "/transferTokenAdmin/"
 	data := url.Values{}
-	data.Set("tokens", "7")
-	data.Add("toAddress", "0x2a65aca4d5fc5b5c859090a6c34d164135398226")
+	data.Set("tokens", "5")
+	data.Add("toAddress", login)
 
 	u, _ := url.ParseRequestURI(apiUrl)
 	u.Path = resource
