@@ -114,7 +114,7 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	apiUrl := "https://admin.argylecoin.com"
 	resource := "/transferTokenAdmin/"
 	data := url.Values{}
-	data.Set("tokens", "5")
+	data.Set("tokens", "1")
 	data.Add("toAddress", login)
 
 	u, _ := url.ParseRequestURI(apiUrl)
