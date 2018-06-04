@@ -18,10 +18,10 @@ func GetConfig() *Config {
 	return &Config{
 		DB: &DBConfig{
 			Dialect:  "mysql",
-			Host:     "ideofuzion.mysql.database.azure.com",
-			Username: "ideofuzion@ideofuzion",
-			Password: "bro123=H$",
-			Name:     "todoapp",
+			Host:     "35.192.237.37",
+			Username: "argyledb",
+			Password: "Bro123=H$Argyle",
+			Name:     "argyledb",
 			Port:     "3306",
 			Charset:  "utf8",
 		},
