@@ -1,14 +1,12 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-type Miner struct {
-	gorm.Model
-	id           int
-	MinerAddress string
-	BlockNumber  int64
-	Reward       int64
+type MinerDetail struct {
+	Id           int64  `gorm:"column:Id"`
+	MinerAddress string `gorm:"column:MinerAddress"`
+	BlockNumber  int64  `gorm:"column:BlockNumber"`
+	Reward       int64  `gorm:"column:Reward"`
 }
