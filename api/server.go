@@ -150,7 +150,7 @@ func (s *ApiServer) collectStats() {
 		log.Fatal("Could not connect database %s", err)
 	}
 	fmt.Println("Connected to DB Successfully %s")
-	Miner := models.Miner{MinerAddress: "0xd4525b963d14995722aea0af936e00c0d9fa9820", BlockNumber: 75000, Reward: 5}
+	Miner := models.MinerDetail{MinerAddress: "0xd4525b963d14995722aea0af936e00c0d9fa9820", BlockNumber: 75000, Reward: 5}
 	db.Save(&Miner)
 	start := time.Now()
 	stats, err := s.backend.CollectStats(s.hashrateWindow, s.config.Blocks, s.config.Payments)
