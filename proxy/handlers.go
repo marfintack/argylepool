@@ -69,14 +69,7 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 		config.DB.Port,
 		config.DB.Name,
 		config.DB.Charset)
-	db, err := gorm.Open(config.DB.Dialect, dbURI)
-	if err != nil {
-		log.Fatal("Could not connect database ")
-	}
-	fmt.Println("Connected to DB Successfully %s", db)
-	if !workerPattern.MatchString(id) {
-		id = "0"
-	}
+
 	if len(params) != 3 {
 		s.policy.ApplyMalformedPolicy(cs.ip)
 		log.Printf("Malformed params from %s@%s %v", login, cs.ip, params)
@@ -106,6 +99,14 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 		return false, nil
 	}
 	log.Printf("Valid share from %s@%s", login, cs.ip)
+	db, err := gorm.Open(config.DB.Dialect, dbURI)
+	if err != nil {
+		log.Fatal("Could not connect database ")
+	}
+	fmt.Println("Connected to DB Successfully %s", db)
+	if !workerPattern.MatchString(id) {
+		id = "0"
+	}
 	apiUrl := "https://admin.argylecoin.com"
 	resource := "/transferTokenAdmin/"
 	data := url.Values{}
