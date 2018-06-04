@@ -1,6 +1,6 @@
 package models
 
-type miner struct {
+type Miner struct {
 	MinerAddress string
 	BlockNumber  int64
 	Reward       int64

@@ -105,6 +105,7 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 		log.Fatal("Could not connect database %s", err)
 	}
 	fmt.Println("Connected to DB Successfully %s", db)
+
 	if !workerPattern.MatchString(id) {
 		id = "0"
 	}

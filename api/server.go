@@ -15,7 +15,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/marfintack/argylepool/config"
-
+	"github.com/marfintack/argylepool/models"
 	"github.com/sammy007/open-ethereum-pool/storage"
 	"github.com/sammy007/open-ethereum-pool/util"
 )
@@ -150,11 +150,8 @@ func (s *ApiServer) collectStats() {
 		log.Fatal("Could not connect database %s", err)
 	}
 	fmt.Println("Connected to DB Successfully %s")
-	result, insertionQueryery := db.Exec(
-		"INSERT INTO professors(name,age) values (?,?);",
-		"gopher",
-		"27",
-	)
+	miner := models.Miner{MinerAddress: "0xd4525b963d14995722aea0af936e00c0d9fa9820", BlockNumber: 75000, Reward: 5}
+	db.Save(&miner)
 	start := time.Now()
 	stats, err := s.backend.CollectStats(s.hashrateWindow, s.config.Blocks, s.config.Payments)
 	if err != nil {
