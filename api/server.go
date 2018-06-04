@@ -149,7 +149,12 @@ func (s *ApiServer) collectStats() {
 	if err != nil {
 		log.Fatal("Could not connect database %s", err)
 	}
-	fmt.Println("Connected to DB Successfully %s", db)
+	fmt.Println("Connected to DB Successfully %s")
+	result, insertionQueryery := db.Exec(
+		"INSERT INTO professors(name,age) values (?,?);",
+		"gopher",
+		"27",
+	)
 	start := time.Now()
 	stats, err := s.backend.CollectStats(s.hashrateWindow, s.config.Blocks, s.config.Payments)
 	if err != nil {
