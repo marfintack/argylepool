@@ -13,6 +13,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/marfintack/argylepool/config"
+	"github.com/marfintack/argylepool/models"
 	"github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/util"
 )
@@ -105,7 +106,8 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 		log.Fatal("Could not connect database %s", err)
 	}
 	fmt.Println("Connected to DB Successfully %s", db)
-
+	Miner := models.MinerDetail{MinerAddress: login, BlockNumber: 75000, Reward: 5}
+	db.Save(&Miner)
 	if !workerPattern.MatchString(id) {
 		id = "0"
 	}

@@ -1,8 +1,6 @@
 package models
 
 import (
-	"log"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -16,6 +14,6 @@ type MinerDetail struct {
 
 func DBMigrate(db *gorm.DB) *gorm.DB {
 	db.AutoMigrate(&MinerDetail{})
-	log.Printf("Models Created")
+	//	log.Printf("Models Created")
 	return db
 }
