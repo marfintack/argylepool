@@ -8,7 +8,7 @@ import (
 	"github.com/marfintack/argylepool/config"
 )
 
-func getConnection() *gorm.DB {
+func GetConnection() *gorm.DB {
 	config := config.GetConfig()
 	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
 		config.DB.Username,
