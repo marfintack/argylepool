@@ -12,9 +12,13 @@ type MinerDetail struct {
 	BlockNumber  int64  `gorm:"column:BlockNumber"`
 	Reward       int64  `gorm:"column:Reward"`
 }
+type MinerReward struct {
+	gorm.Model
+	RewardValue string `gorm:"column:Reward"`
+}
 
 func DBMigrate(db *gorm.DB) *gorm.DB {
-	db.AutoMigrate(&MinerDetail{})
+	db.AutoMigrate(&MinerDetail{}, &MinerReward{})
 	//	log.Printf("Models Created")
 	return db
 }
