@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"sort"
@@ -12,9 +11,8 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/marfintack/argylepool/config"
+	"github.com/marfintack/argylepool/connector"
 	"github.com/marfintack/argylepool/models"
 	"github.com/sammy007/open-ethereum-pool/storage"
 	"github.com/sammy007/open-ethereum-pool/util"
@@ -137,18 +135,19 @@ func (s *ApiServer) purgeStale() {
 }
 
 func (s *ApiServer) collectStats() {
-	config := config.GetConfig()
-	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
-		config.DB.Username,
-		config.DB.Password,
-		config.DB.Host,
-		config.DB.Port,
-		config.DB.Name,
-		config.DB.Charset)
-	db, err := gorm.Open(config.DB.Dialect, dbURI)
-	if err != nil {
-		//	log.Fatal("Could not connect database %s", err)
-	}
+	// config := config.GetConfig()
+	// dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
+	// 	config.DB.Username,
+	// 	config.DB.Password,
+	// 	config.DB.Host,
+	// 	config.DB.Port,
+	// 	config.DB.Name,
+	// 	config.DB.Charset)
+	// db, err := gorm.Open(config.DB.Dialect, dbURI)
+	// if err != nil {
+	// 	//	log.Fatal("Could not connect database %s", err)
+	// }
+	db := connector.GetConnection()
 	models.DBMigrate(db)
 
 	start := time.Now()
