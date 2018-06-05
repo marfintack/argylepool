@@ -10,9 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/marfintack/argylepool/config"
+	"github.com/marfintack/argylepool/connector"
 	"github.com/marfintack/argylepool/models"
 	"github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/util"
@@ -63,14 +62,14 @@ func (s *ProxyServer) handleTCPSubmitRPC(cs *Session, id string, params []string
 }
 
 func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []string) (bool, *ErrorReply) {
-	config := config.GetConfig()
-	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
-		config.DB.Username,
-		config.DB.Password,
-		config.DB.Host,
-		config.DB.Port,
-		config.DB.Name,
-		config.DB.Charset)
+	// config := config.GetConfig()
+	// dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
+	// 	config.DB.Username,
+	// 	config.DB.Password,
+	// 	config.DB.Host,
+	// 	config.DB.Port,
+	// 	config.DB.Name,
+	// 	config.DB.Charset)
 
 	if len(params) != 3 {
 		s.policy.ApplyMalformedPolicy(cs.ip)
@@ -101,10 +100,11 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 		return false, nil
 	}
 	log.Printf("Valid share from %s@%s", login, cs.ip)
-	db, err := gorm.Open(config.DB.Dialect, dbURI)
-	if err != nil {
-		log.Fatal("Could not connect database %s", err)
-	}
+	// db, err := gorm.Open(config.DB.Dialect, dbURI)
+	// if err != nil {
+	// 	log.Fatal("Could not connect database %s", err)
+	// }
+	db := connector.getConnection()
 	Miner := models.MinerDetail{MinerAddress: login, BlockNumber: 75000, Reward: 5}
 	db.Save(&Miner)
 	if !workerPattern.MatchString(id) {

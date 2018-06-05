@@ -149,7 +149,6 @@ func (s *ApiServer) collectStats() {
 	if err != nil {
 		//	log.Fatal("Could not connect database %s", err)
 	}
-	fmt.Println("Connected to DB Successfully %s")
 	models.DBMigrate(db)
 
 	start := time.Now()
