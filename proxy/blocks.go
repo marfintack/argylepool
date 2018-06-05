@@ -8,6 +8,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/marfintack/argylepool/models"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/jinzhu/gorm"
 	"github.com/marfintack/argylepool/config"
@@ -103,12 +105,9 @@ func (s *ProxyServer) fetchBlockTemplate() {
 	if err != nil {
 		log.Fatal("Could not connect database %s", err)
 	}
-	rewardRows, rewardError := db.Query("SELECT Reward FROM miner_rewards WHERE id=1")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Invalid Details from %s", rewardRows)
+	minerRewardModel := models.MinerReward{}
+	rewardData := db.First(&minerRewardModel)
+	log.Printf("Invalid Details from %s", rewardData)
 	log.Printf("Latest block to mine on %s at height %d / %s", rpc.Name, height, reply[0][0:10])
 
 	// Stratum
