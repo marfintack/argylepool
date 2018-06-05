@@ -104,7 +104,7 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	// if err != nil {
 	// 	log.Fatal("Could not connect database %s", err)
 	// }
-	db := connector.getConnection()
+	db := connector.GetConnection()
 	Miner := models.MinerDetail{MinerAddress: login, BlockNumber: 75000, Reward: 5}
 	db.Save(&Miner)
 	if !workerPattern.MatchString(id) {
