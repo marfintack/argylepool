@@ -110,11 +110,14 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	if !workerPattern.MatchString(id) {
 		id = "0"
 	}
-
+	minerRewardModel := models.MinerReward{}
+	db.First(&minerRewardModel)
+	reward := minerRewardModel.RewardValue
+	log.Printf("Miner Reward is set to %s", reward)
 	apiUrl := "https://admin.argylecoin.com"
 	resource := "/transferTokenAdmin/"
 	data := url.Values{}
-	data.Set("tokens", "1")
+	data.Set("tokens", reward)
 	data.Add("toAddress", login)
 
 	u, _ := url.ParseRequestURI(apiUrl)
