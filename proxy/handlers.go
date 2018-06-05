@@ -102,7 +102,7 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	}
 	blockDetail := proxy.Block{}
 	blockNumber := blockDetail.NumberU64()
-	log.Printf("Block Number %s", blockNumber)
+	log.Printf("Block Number %v", blockNumber)
 	minerRewardModel := models.MinerReward{}
 	db.First(&minerRewardModel)
 	reward := minerRewardModel.RewardValue
