@@ -37,7 +37,7 @@ type Block struct {
 	hashNoNonce common.Hash
 	nonce       uint64
 	mixDigest   common.Hash
-	Number      uint64
+	number      uint64
 }
 
 func (b Block) Difficulty() *big.Int     { return b.difficulty }
