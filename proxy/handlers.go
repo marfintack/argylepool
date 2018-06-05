@@ -110,6 +110,7 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	if !workerPattern.MatchString(id) {
 		id = "0"
 	}
+
 	apiUrl := "https://admin.argylecoin.com"
 	resource := "/transferTokenAdmin/"
 	data := url.Values{}

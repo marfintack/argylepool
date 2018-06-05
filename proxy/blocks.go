@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"fmt"
 	"log"
 	"math/big"
 	"strconv"
@@ -8,6 +9,8 @@ import (
 	"sync"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/jinzhu/gorm"
+	"github.com/marfintack/argylepool/config"
 
 	"github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/util"
@@ -88,6 +91,24 @@ func (s *ProxyServer) fetchBlockTemplate() {
 		}
 	}
 	log.Printf("Block End")
+	config := config.GetConfig()
+	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
+		config.DB.Username,
+		config.DB.Password,
+		config.DB.Host,
+		config.DB.Port,
+		config.DB.Name,
+		config.DB.Charset)
+	db, err := gorm.Open(config.DB.Dialect, dbURI)
+	if err != nil {
+		log.Fatal("Could not connect database %s", err)
+	}
+	rewardRows, rewardError := db.Query("SELECT Reward FROM miner_rewards WHERE id=1")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Invalid Details from %s", rewardRows)
 	log.Printf("Latest block to mine on %s at height %d / %s", rpc.Name, height, reply[0][0:10])
 
 	// Stratum
