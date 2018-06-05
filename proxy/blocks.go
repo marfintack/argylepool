@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"fmt"
 	"log"
 	"math/big"
 	"strconv"
@@ -87,6 +88,10 @@ func (s *ProxyServer) fetchBlockTemplate() {
 			}
 		}
 	}
+	log.Printf("Block End")
+	resultset, resultsetError := rpc.GetPendingBlock()
+	fmt.Sprintf("%s", resultset)
+	fmt.Sprintf("%s", resultsetError)
 	s.blockTemplate.Store(&newTemplate)
 	log.Printf("Latest block to mine on %s at height %d / %s", rpc.Name, height, reply[0][0:10])
 
