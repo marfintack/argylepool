@@ -10,7 +10,7 @@ type MinerDetail struct {
 	// Id           int64  `gorm:"primary_key;AUTO_INCREMENT;column:Id"`
 	MinerAddress string `gorm:"column:MinerAddress"`
 	MinerIp      string `gorm:"column:Ip"`
-	HashRate     string `gorm:"column:HashRate"`
+	HashRate     int64  `gorm:"column:HashRate"`
 	BlockNumber  uint64 `gorm:"column:BlockNumber"`
 	Reward       string `gorm:"column:Reward"`
 }
