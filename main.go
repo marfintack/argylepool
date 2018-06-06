@@ -1,9 +1,8 @@
-// +build go1.9
-
 package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -71,7 +70,7 @@ func readConfig(cfg *proxy.Config) {
 }
 
 func main() {
-
+	fmt.Println("Going to start Miner")
 	readConfig(&cfg)
 	rand.Seed(time.Now().UnixNano())
 

@@ -1,7 +1,6 @@
 package proxy
 
 import (
-	"fmt"
 	"log"
 	"math/big"
 	"strconv"
@@ -68,12 +67,6 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 		}
 	} else {
 		exist, err := s.backend.WriteShare(login, id, params, shareDiff, h.height, s.hashrateExpiration)
-		fmt.Println("Block Is Mined Successfully")
-		fmt.Println("Login %v", login)
-		fmt.Println("Id %v ", ip)
-		fmt.Println("Share Diff %v", shareDiff)
-		fmt.Println("Height %v", h.height)
-		fmt.Println("Hash Rate %v", s.hashrateExpiration)
 		if exist {
 			return true, false
 		}
@@ -83,3 +76,10 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 	}
 	return false, true
 }
+
+// fmt.Println("Block Is Mined Successfully")
+// fmt.Println("Login %v", login)
+// fmt.Println("Id %v ", ip)
+// fmt.Println("Share Diff %v", shareDiff)
+// fmt.Println("Height %v", h.height)
+// fmt.Println("Hash Rate %v", s.hashrateExpiration)

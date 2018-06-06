@@ -13,7 +13,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/marfintack/argylepool/connector"
 	"github.com/marfintack/argylepool/models"
-	"github.com/marfintack/argylepool/proxy"
+	"github.com/sammy007/open-ethereum-pool/proxy"
 	"github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/util"
 )

@@ -167,6 +167,7 @@ func (r *RedisClient) checkPoWExist(height uint64, params []string) (bool, error
 }
 
 func (r *RedisClient) WriteShare(login, id string, params []string, diff int64, height uint64, window time.Duration) (bool, error) {
+	
 	exist, err := r.checkPoWExist(height, params)
 	if err != nil {
 		return false, err
