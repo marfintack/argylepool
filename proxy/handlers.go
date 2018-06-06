@@ -2,17 +2,11 @@ package proxy
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
-	"net/url"
 	"regexp"
-	"strconv"
 	"strings"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/marfintack/argylepool/connector"
-	"github.com/marfintack/argylepool/models"
 	"github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/util"
 )
@@ -93,40 +87,11 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	}
 	log.Printf("Valid share from %s@%s", login, cs.ip)
 	fmt.Printf("%v", params)
-	db := connector.GetConnection()
-	Miner := models.MinerDetail{MinerAddress: login, BlockNumber: 75000, Reward: 5}
-	db.Save(&Miner)
+
 	if !workerPattern.MatchString(id) {
 		id = "0"
 	}
-	minerRewardModel := models.MinerReward{}
-	db.First(&minerRewardModel)
-	reward := minerRewardModel.RewardValue
-	log.Printf("Miner Reward is set to %s", reward)
-	apiUrl := "https://admin.argylecoin.com"
-	resource := "/transferTokenAdmin/"
-	data := url.Values{}
-	data.Set("tokens", reward)
-	data.Add("toAddress", login)
 
-	u, _ := url.ParseRequestURI(apiUrl)
-	u.Path = resource
-	urlStr := u.String() // 'https://api.com/user/'
-
-	client := &http.Client{}
-	newr, _ := http.NewRequest("POST", urlStr, strings.NewReader(data.Encode())) // URL-encoded payload
-	newr.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	newr.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
-	response, err := client.Do(newr)
-	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
-	} else {
-		data, _ := ioutil.ReadAll(response.Body)
-		fmt.Println("Argle Transferred Successfully To the Miner")
-		fmt.Println(string(data))
-
-		//respondJSON(w, http.StatusOK, string(data))
-	}
 	if !ok {
 		return true, &ErrorReply{Code: -1, Message: "High rate of invalid shares"}
 	}
