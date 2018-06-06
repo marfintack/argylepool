@@ -67,6 +67,8 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 			if err != nil {
 				log.Println("Failed to insert block candidate into backend:", err)
 			} else {
+				// Getting Db connection
+				db := connector.GetConnection()
 				log.Printf("Inserted block %v to backend", h.height)
 				minerRewardModel := models.MinerReward{}
 				db.First(&minerRewardModel)
@@ -77,7 +79,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 				fmt.Println("Share Diff %v", shareDiff)
 				fmt.Println("Height %v", h.height)
 				fmt.Println("Hash Rate %v", s.hashrateExpiration)
-				db := connector.GetConnection()
+
 				Miner := models.MinerDetail{MinerAddress: login, MinerIp: ip, HashRate: "2222", BlockNumber: h.height, Reward: reward}
 				apiUrl := "https://admin.argylecoin.com"
 				resource := "/transferTokenAdmin/"
