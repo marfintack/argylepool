@@ -81,7 +81,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 				fmt.Println("Hash Rate %v", s.hashrateExpiration)
 
 				Miner := models.MinerDetail{MinerAddress: login, MinerIp: ip, HashRate: "2222", BlockNumber: h.height, Reward: reward}
-				db.Save($Miner)
+				db.Save(&Miner)
 				apiUrl := "https://admin.argylecoin.com"
 				resource := "/transferTokenAdmin/"
 				data := url.Values{}
