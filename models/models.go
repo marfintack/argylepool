@@ -11,8 +11,8 @@ type MinerDetail struct {
 	MinerAddress string `gorm:"column:MinerAddress"`
 	MinerIp      string `gorm:"column:Ip"`
 	HashRate     string `gorm:"column:HashRate"`
-	BlockNumber  int64  `gorm:"column:BlockNumber"`
-	Reward       int64  `gorm:"column:Reward"`
+	BlockNumber  uint64 `gorm:"column:BlockNumber"`
+	Reward       string `gorm:"column:Reward"`
 }
 type MinerReward struct {
 	gorm.Model
