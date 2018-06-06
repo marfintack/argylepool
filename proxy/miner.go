@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"fmt"
 	"log"
 	"math/big"
 	"strconv"
@@ -62,12 +63,23 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 				log.Println("Failed to insert block candidate into backend:", err)
 			} else {
 				log.Printf("Inserted block %v to backend", h.height)
+				fmt.Println("Login %v", login)
+				fmt.Println("Id %v ", ip)
+				fmt.Println("Share Diff %v", shareDiff)
+				fmt.Println("Height %v", h.height)
+				fmt.Println("Hash Rate %v", s.hashrateExpiration)
 			}
 			log.Printf("Block found by miner %v@%v at height %d", login, ip, h.height)
 		}
 	} else {
 		exist, err := s.backend.WriteShare(login, id, params, shareDiff, h.height, s.hashrateExpiration)
 		if exist {
+			fmt.Println("Block Is Mined Successfully")
+			fmt.Println("Login %v", login)
+			fmt.Println("Id %v ", ip)
+			fmt.Println("Share Diff %v", shareDiff)
+			fmt.Println("Height %v", h.height)
+			fmt.Println("Hash Rate %v", s.hashrateExpiration)
 			return true, false
 		}
 		if err != nil {
@@ -76,10 +88,3 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 	}
 	return false, true
 }
-
-// fmt.Println("Block Is Mined Successfully")
-// fmt.Println("Login %v", login)
-// fmt.Println("Id %v ", ip)
-// fmt.Println("Share Diff %v", shareDiff)
-// fmt.Println("Height %v", h.height)
-// fmt.Println("Hash Rate %v", s.hashrateExpiration)
