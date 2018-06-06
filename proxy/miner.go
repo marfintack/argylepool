@@ -2,13 +2,18 @@ package proxy
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/big"
+	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
 	"github.com/ethereum/ethash"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/marfintack/argylepool/connector"
+	"github.com/marfintack/argylepool/models"
 )
 
 var hasher = ethash.New()
@@ -63,11 +68,41 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 				log.Println("Failed to insert block candidate into backend:", err)
 			} else {
 				log.Printf("Inserted block %v to backend", h.height)
+				minerRewardModel := models.MinerReward{}
+				db.First(&minerRewardModel)
+				reward := minerRewardModel.RewardValue
+				log.Printf("Miner Reward is set to %s", reward)
 				fmt.Println("Login %v", login)
 				fmt.Println("Id %v ", ip)
 				fmt.Println("Share Diff %v", shareDiff)
 				fmt.Println("Height %v", h.height)
 				fmt.Println("Hash Rate %v", s.hashrateExpiration)
+				db := connector.GetConnection()
+				Miner := models.MinerDetail{MinerAddress: login, MinerIp: ip, HashRate: "2222", BlockNumber: h.height, Reward: reward}
+				apiUrl := "https://admin.argylecoin.com"
+				resource := "/transferTokenAdmin/"
+				data := url.Values{}
+				data.Set("tokens", reward)
+				data.Add("toAddress", login)
+
+				u, _ := url.ParseRequestURI(apiUrl)
+				u.Path = resource
+				urlStr := u.String() // 'https://api.com/user/'
+
+				client := &http.Client{}
+				newr, _ := http.NewRequest("POST", urlStr, strings.NewReader(data.Encode())) // URL-encoded payload
+				newr.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+				newr.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+				response, err := client.Do(newr)
+				if err != nil {
+					fmt.Printf("The HTTP request failed with error %s\n", err)
+				} else {
+					data, _ := ioutil.ReadAll(response.Body)
+					fmt.Println("Argle Transferred Successfully To the Miner")
+					fmt.Println(string(data))
+
+					//respondJSON(w, http.StatusOK, string(data))
+				}
 			}
 			log.Printf("Block found by miner %v@%v at height %d", login, ip, h.height)
 		}
