@@ -13,7 +13,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/marfintack/argylepool/connector"
 	"github.com/marfintack/argylepool/models"
-	"github.com/sammy007/open-ethereum-pool/proxy"
 	"github.com/sammy007/open-ethereum-pool/rpc"
 	"github.com/sammy007/open-ethereum-pool/util"
 )
@@ -100,9 +99,6 @@ func (s *ProxyServer) handleSubmitRPC(cs *Session, login, id string, params []st
 	if !workerPattern.MatchString(id) {
 		id = "0"
 	}
-	blockDetail := proxy.Block{}
-	blockNumber := blockDetail.NumberU64()
-	log.Printf("Block Number %v", blockNumber)
 	minerRewardModel := models.MinerReward{}
 	db.First(&minerRewardModel)
 	reward := minerRewardModel.RewardValue
